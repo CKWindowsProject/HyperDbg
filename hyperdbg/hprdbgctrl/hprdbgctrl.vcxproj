@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="debug|x64">
+      <Configuration>debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="release|x64">
+      <Configuration>release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -18,17 +18,17 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
     <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
     <SpectreMitigation>false</SpectreMitigation>
@@ -40,24 +40,26 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <TargetName>HPRDBGCTRL</TargetName>
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\build\Debug\</OutDir>
+    <OutDir>$(SolutionDir)build\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <TargetName>HPRDBGCTRL</TargetName>
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\build\Release\</OutDir>
+    <OutDir>$(SolutionDir)build\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -65,7 +67,7 @@
       <PreprocessorDefinitions>ZYCORE_STATIC_DEFINE;ZYDIS_STATIC_DEFINE;WINVER=0x0502;_WIN32_WINNT=0x0502;NTDDI_VERSION=0x05020000;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HPRDBGCTRL_EXPORTS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\zydis\dependencies\zycore\include;$(SolutionDir)\include;$(SolutionDir)\dependencies\zydis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\phnt;$(SolutionDir)\dependencies;$(SolutionDir)\dependencies\zydis\dependencies\zycore\include;$(SolutionDir)\include;$(SolutionDir)\dependencies\zydis\include;$(SolutionDir)\hprdbgctrl;$(SolutionDir)\script-eval;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
@@ -73,11 +75,26 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)libraries\zydis\Zycore.lib;$(SolutionDir)libraries\zydis\Zydis.lib;$(SolutionDir)Build\Debug\script-engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)libraries\zydis\Zycore.lib;$(SolutionDir)libraries\zydis\Zydis.lib;$(SolutionDir)build\bin\$(Configuration)\script-engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)SDK\" rd /q /s "$(OutDir)SDK\"
+xcopy /E /I /Y "$(SolutionDir)include\SDK" "$(OutDir)SDK"
+mkdir "$(OutDir)SDK\Libraries"
+copy "$(OutDir)HPRDBGCTRL.lib" "$(OutDir)SDK\Libraries\HPRDBGCTRL.lib"
+copy "$(OutDir)pdbex.lib" "$(OutDir)SDK\Libraries\pdbex.lib"
+copy "$(OutDir)kdserial.lib" "$(OutDir)SDK\Libraries\kdserial.lib"
+copy "$(OutDir)script-engine.lib" "$(OutDir)SDK\Libraries\script-engine.lib"
+copy "$(OutDir)symbol-parser.lib" "$(OutDir)SDK\Libraries\symbol-parser.lib"
+copy "$(OutDir)HPRDBGCTRL.dll" "$(OutDir)SDK\Libraries\HPRDBGCTRL.dll"
+copy "$(OutDir)pdbex.dll" "$(OutDir)SDK\Libraries\pdbex.dll"
+copy "$(OutDir)kdserial.dll" "$(OutDir)SDK\Libraries\kdserial.dll"
+copy "$(OutDir)script-engine.dll" "$(OutDir)SDK\Libraries\script-engine.dll"
+copy "$(OutDir)symbol-parser.dll" "$(OutDir)SDK\Libraries\symbol-parser.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -88,7 +105,7 @@
       <PreprocessorDefinitions>ZYCORE_STATIC_DEFINE;ZYDIS_STATIC_DEFINE;WINVER=0x0502;_WIN32_WINNT=0x0502;NTDDI_VERSION=0x05020000;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;HPRDBGCTRL_EXPORTS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\zydis\dependencies\zycore\include;$(SolutionDir)\include;$(SolutionDir)\dependencies\zydis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\phnt;$(SolutionDir)\dependencies;$(SolutionDir)\dependencies\zydis\dependencies\zycore\include;$(SolutionDir)\include;$(SolutionDir)\dependencies\zydis\include;$(SolutionDir)\hprdbgctrl;$(SolutionDir)\script-eval;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
@@ -98,133 +115,166 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)libraries\zydis\Zycore.lib;$(SolutionDir)libraries\zydis\Zydis.lib;$(SolutionDir)Build\Release\script-engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)libraries\zydis\Zycore.lib;$(SolutionDir)libraries\zydis\Zydis.lib;$(SolutionDir)build\bin\$(Configuration)\script-engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)SDK\" rd /q /s "$(OutDir)SDK\"
+xcopy /E /I /Y "$(SolutionDir)include\SDK" "$(OutDir)SDK"
+mkdir "$(OutDir)SDK\Libraries"
+copy "$(OutDir)HPRDBGCTRL.lib" "$(OutDir)SDK\Libraries\HPRDBGCTRL.lib"
+copy "$(OutDir)pdbex.lib" "$(OutDir)SDK\Libraries\pdbex.lib"
+copy "$(OutDir)kdserial.lib" "$(OutDir)SDK\Libraries\kdserial.lib"
+copy "$(OutDir)script-engine.lib" "$(OutDir)SDK\Libraries\script-engine.lib"
+copy "$(OutDir)symbol-parser.lib" "$(OutDir)SDK\Libraries\symbol-parser.lib"
+copy "$(OutDir)HPRDBGCTRL.dll" "$(OutDir)SDK\Libraries\HPRDBGCTRL.dll"
+copy "$(OutDir)pdbex.dll" "$(OutDir)SDK\Libraries\pdbex.dll"
+copy "$(OutDir)kdserial.dll" "$(OutDir)SDK\Libraries\kdserial.dll"
+copy "$(OutDir)script-engine.dll" "$(OutDir)SDK\Libraries\script-engine.dll"
+copy "$(OutDir)symbol-parser.dll" "$(OutDir)SDK\Libraries\symbol-parser.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="commands.h" />
-    <ClInclude Include="common.h" />
-    <ClInclude Include="debugger.h" />
-    <ClInclude Include="exports.h" />
-    <ClInclude Include="forwarding.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="help.h" />
-    <ClInclude Include="inipp.h" />
-    <ClInclude Include="install.h" />
-    <ClInclude Include="kd.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="namedpipe.h" />
+    <ClInclude Include="header\commands.h" />
+    <ClInclude Include="header\common.h" />
+    <ClInclude Include="header\communication.h" />
+    <ClInclude Include="header\debugger.h" />
+    <ClInclude Include="header\exports.h" />
+    <ClInclude Include="header\forwarding.h" />
+    <ClInclude Include="header\globals.h" />
+    <ClInclude Include="header\help.h" />
+    <ClInclude Include="header\inipp.h" />
+    <ClInclude Include="header\install.h" />
+    <ClInclude Include="header\kd.h" />
+    <ClInclude Include="header\list.h" />
+    <ClInclude Include="header\namedpipe.h" />
+    <ClInclude Include="header\objects.h" />
+    <ClInclude Include="header\pe-parser.h" />
+    <ClInclude Include="header\script-engine.h" />
+    <ClInclude Include="header\symbol.h" />
+    <ClInclude Include="header\tests.h" />
+    <ClInclude Include="header\transparency.h" />
+    <ClInclude Include="header\ud.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="communication.h" />
-    <ClInclude Include="symbol.h" />
-    <ClInclude Include="tests.h" />
-    <ClInclude Include="transparency.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="attach.cpp" />
-    <ClCompile Include="bc.cpp" />
-    <ClCompile Include="bd.cpp" />
-    <ClCompile Include="be.cpp" />
-    <ClCompile Include="bl.cpp" />
-    <ClCompile Include="bp.cpp" />
-    <ClCompile Include="breakcontrol.cpp" />
-    <ClCompile Include="cls.cpp" />
-    <ClCompile Include="connect.cpp" />
-    <ClCompile Include="cpuid.cpp" />
-    <ClCompile Include="d-u.cpp" />
-    <ClCompile Include="debug.cpp" />
-    <ClCompile Include="debugger.cpp" />
-    <ClCompile Include="detach.cpp" />
-    <ClCompile Include="disconnect.cpp" />
-    <ClCompile Include="dr.cpp" />
-    <ClCompile Include="e.cpp" />
-    <ClCompile Include="epthook.cpp" />
-    <ClCompile Include="eval.cpp" />
-    <ClCompile Include="events.cpp" />
-    <ClCompile Include="exception.cpp" />
-    <ClCompile Include="exit.cpp" />
-    <ClCompile Include="flush.cpp" />
-    <ClCompile Include="formats.cpp" />
-    <ClCompile Include="epthook2.cpp" />
-    <ClCompile Include="forwarding.cpp" />
-    <ClCompile Include="g.cpp" />
-    <ClCompile Include="gaussian-rng.cpp" />
-    <ClCompile Include="help.cpp" />
-    <ClCompile Include="hide.cpp" />
-    <ClCompile Include="i.cpp" />
-    <ClCompile Include="interrupt.cpp" />
-    <ClCompile Include="ioin.cpp" />
-    <ClCompile Include="ioout.cpp" />
-    <ClCompile Include="kd.cpp" />
-    <ClCompile Include="listen.cpp" />
-    <ClCompile Include="listening.cpp" />
-    <ClCompile Include="load.cpp" />
-    <ClCompile Include="logclose.cpp" />
-    <ClCompile Include="logopen.cpp" />
-    <ClCompile Include="measure.cpp" />
-    <ClCompile Include="monitor.cpp" />
-    <ClCompile Include="msrread.cpp" />
-    <ClCompile Include="msrwrite.cpp" />
-    <ClCompile Include="namedpipe.cpp" />
-    <ClCompile Include="output.cpp" />
-    <ClCompile Include="p.cpp" />
-    <ClCompile Include="pa2va.cpp" />
-    <ClCompile Include="pause.cpp" />
-    <ClCompile Include="pmc.cpp" />
-    <ClCompile Include="print.cpp" />
-    <ClCompile Include="process.cpp" />
-    <ClCompile Include="pte.cpp" />
-    <ClCompile Include="r.cpp" />
-    <ClCompile Include="rdmsr.cpp" />
-    <ClCompile Include="readmem.cpp" />
-    <ClCompile Include="remoteconnection.cpp" />
-    <ClCompile Include="s.cpp" />
-    <ClCompile Include="script.cpp" />
-    <ClCompile Include="settings.cpp" />
-    <ClCompile Include="script-engine-wrapper.cpp" />
-    <ClCompile Include="sleep.cpp" />
-    <ClCompile Include="status.cpp" />
-    <ClCompile Include="sym.cpp" />
-    <ClCompile Include="symbol.cpp" />
-    <ClCompile Include="sympath.cpp" />
-    <ClCompile Include="syscall-sysret.cpp" />
-    <ClCompile Include="t.cpp" />
-    <ClCompile Include="tcpclient.cpp" />
-    <ClCompile Include="tcpserver.cpp" />
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="tests.cpp" />
-    <ClCompile Include="transparency.cpp" />
-    <ClCompile Include="tsc.cpp" />
-    <ClCompile Include="unhide.cpp" />
-    <ClCompile Include="unload.cpp" />
-    <ClCompile Include="va2pa.cpp" />
-    <ClCompile Include="vmcall.cpp" />
-    <ClCompile Include="wrmsr.cpp" />
-    <ClCompile Include="x.cpp" />
-    <ClCompile Include="~.cpp" />
-    <MASM Include="AsmVmxChecks.asm">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </MASM>
-    <ClCompile Include="cpu.cpp" />
-    <ClCompile Include="disassembler.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="common.cpp" />
-    <ClCompile Include="hprdbgctrl.cpp" />
-    <ClCompile Include="install.cpp" />
-    <ClCompile Include="interpreter.cpp" />
-    <ClCompile Include="list.cpp" />
-    <ClCompile Include="lm.cpp" />
+    <ClCompile Include="..\script-eval\code\Functions.c" />
+    <ClCompile Include="..\script-eval\code\Keywords.c" />
+    <ClCompile Include="..\script-eval\code\PseudoRegisters.c" />
+    <ClCompile Include="..\script-eval\code\Regs.c" />
+    <ClCompile Include="..\script-eval\code\ScriptEngineEval.c" />
+    <ClCompile Include="code\common\spinlock.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\dt-struct.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\k.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\prealloc.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\crwrite.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\kill.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\pe.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\restart.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\start.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\switch.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\thread.cpp" />
+    <ClCompile Include="code\debugger\core\break-control.cpp" />
+    <ClCompile Include="code\debugger\core\debugger.cpp" />
+    <ClCompile Include="code\debugger\core\interpreter.cpp" />
+    <ClCompile Include="code\debugger\kernel-level\kd.cpp" />
+    <ClCompile Include="code\debugger\kernel-level\kernel-listening.cpp" />
+    <ClCompile Include="code\debugger\misc\callstack.cpp" />
+    <ClCompile Include="code\debugger\misc\disassembler.cpp" />
+    <ClCompile Include="code\debugger\misc\readmem.cpp" />
+    <ClCompile Include="code\debugger\script-engine-wrapper\symbol.cpp" />
+    <ClCompile Include="code\debugger\user-level\pe-parser.cpp" />
+    <ClCompile Include="code\debugger\user-level\ud.cpp" />
+    <ClCompile Include="code\debugger\user-level\user-listening.cpp" />
+    <ClCompile Include="code\objects\objects.cpp" />
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="code\app\dllmain.cpp" />
+    <ClCompile Include="code\app\hprdbgctrl.cpp" />
+    <ClCompile Include="code\common\common.cpp" />
+    <ClCompile Include="code\common\list.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\bc.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\bd.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\be.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\bl.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\bp.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\cpu.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\d-u.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\e.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\eval.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\events.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\exit.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\flush.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\g.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\i.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\lm.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\load.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\output.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\p.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\pause.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\print.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\r.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\rdmsr.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\s.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\settings.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\sleep.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\t.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\test.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\unload.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\wrmsr.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\x.cpp" />
+    <ClCompile Include="code\debugger\commands\debugging-commands\~.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\cpuid.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\dr.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\epthook.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\epthook2.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\exception.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\hide.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\interrupt.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\ioin.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\ioout.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\measure.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\monitor.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\msrread.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\msrwrite.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\pa2va.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\pmc.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\pte.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\syscall-sysret.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\tsc.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\unhide.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\va2pa.cpp" />
+    <ClCompile Include="code\debugger\commands\extension-commands\vmcall.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\attach.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\cls.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\connect.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\debug.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\detach.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\disconnect.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\formats.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\help.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\listen.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\logclose.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\logopen.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\process.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\script.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\status.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\sym.cpp" />
+    <ClCompile Include="code\debugger\commands\meta-commands\sympath.cpp" />
+    <ClCompile Include="code\debugger\communication\forwarding.cpp" />
+    <ClCompile Include="code\debugger\communication\namedpipe.cpp" />
+    <ClCompile Include="code\debugger\communication\remote-connection.cpp" />
+    <ClCompile Include="code\debugger\communication\tcpclient.cpp" />
+    <ClCompile Include="code\debugger\communication\tcpserver.cpp" />
+    <ClCompile Include="code\debugger\driver-loader\install.cpp" />
+    <ClCompile Include="code\debugger\script-engine-wrapper\script-engine-wrapper.cpp" />
+    <ClCompile Include="code\debugger\script-engine-wrapper\script-engine.cpp" />
+    <ClCompile Include="code\debugger\tests\tests.cpp" />
+    <ClCompile Include="code\debugger\transparency\gaussian-rng.cpp" />
+    <ClCompile Include="code\debugger\transparency\transparency.cpp" />
+    <MASM Include="code\assembly\asm-vmx-checks.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

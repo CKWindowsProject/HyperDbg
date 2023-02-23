@@ -1,6 +1,6 @@
 /**
  * @file pch.h
- * @author Sina Karvandi (sina@rayanfam.com)
+ * @author Sina Karvandi (sina@hyperdbg.org)
  * @brief pre-compiled headers
  * @details
  * @version 0.1
@@ -27,8 +27,9 @@
 //
 // Program Defined Headers
 //
+#include "SDK/HyperDbgSdk.h"
 #include "Definition.h"
-#include "namedpipe.h"
-#include "routines.h"
+#include "..\hyperdbg-test\header\namedpipe.h"
+#include "..\hyperdbg-test\header\routines.h"
 
 using namespace std;

@@ -1,6 +1,6 @@
 /**
  * @file Configuration.h
- * @author Sina Karvandi (sina@rayanfam.com)
+ * @author Sina Karvandi (sina@hyperdbg.org)
  * @brief Global configuration that applies on compile time
  * @details you can disable or enable the following features and compile the
  * project Next time you used the project binary files these settings applied.
@@ -43,14 +43,14 @@
 
 /**
  * @brief Use immediate messaging (means that it sends each message when they
- * recieved and do not accumulate them) it works only if you set
+ * received and do not accumulate them) it works only if you set
  * UseDbgPrintInsteadOfUsermodeMessageTracking to FALSE
  */
 #define UseImmediateMessaging TRUE
 
 /**
  * @brief Use immediate messaging (means that it sends each message when they
- * recieved and do not accumulate them) its the default value on events,
+ * received and do not accumulate them) its the default value on events,
  * a user can change this behavior by selecting 'imm yes' or 'imm no' in the
  * case of events
  */
@@ -62,3 +62,8 @@
  * case of errors
  */
 #define DebugMode FALSE
+
+/**
+ * @brief Activates the user-mode debugger
+ */
+#define ActivateUserModeDebugger FALSE

@@ -3,9 +3,9 @@ from lalr1_parser import *
 
 class Generator():
     def __init__(self): 
-        self.SourceFile = open("..\\parse-table.c", "w")
-        self.HeaderFile = open("..\\parse-table.h", "w")   
-        self.CommonHeaderFile = open("..\\..\\include\\ScriptEngineCommonDefinitions.h", "w")
+        self.SourceFile = open("..\\code\\parse-table.c", "w")
+        self.HeaderFile = open("..\\header\\parse-table.h", "w")   
+        self.CommonHeaderFile = open("..\\..\\script-eval\\header\\ScriptEngineCommonDefinitions.h", "w")
         self.ll1 = LL1Parser(self.SourceFile, self.HeaderFile, self.CommonHeaderFile)
         self.lalr = LALR1Parser(self.SourceFile, self.HeaderFile)
 
@@ -61,18 +61,19 @@ typedef struct ACTION_BUFFER {
 } ACTION_BUFFER, *PACTION_BUFFER;
 
 
-#define SYMBOL_ID_TYPE 0
-#define SYMBOL_NUM_TYPE 1
-#define SYMBOL_REGISTER_TYPE 2
-#define SYMBOL_PSEUDO_REG_TYPE 3
-#define SYMBOL_SEMANTIC_RULE_TYPE 4
-#define SYMBOL_TEMP_TYPE 5
-#define SYMBOL_STRING_TYPE 6
-#define SYMBOL_VARIABLE_COUNT_TYPE 7
+#define SYMBOL_GLOBAL_ID_TYPE 0
+#define SYMBOL_LOCAL_ID_TYPE 1
+#define SYMBOL_NUM_TYPE 2
+#define SYMBOL_REGISTER_TYPE 3
+#define SYMBOL_PSEUDO_REG_TYPE 4
+#define SYMBOL_SEMANTIC_RULE_TYPE 5
+#define SYMBOL_TEMP_TYPE 6
+#define SYMBOL_STRING_TYPE 7
+#define SYMBOL_VARIABLE_COUNT_TYPE 8
 #define SYMBOL_MEM_VALID_CHECK_MASK (1 << 31)
-#define SYMBOL_INVALID 8
-#define INVALID -99
-#define LALR_ACCEPT 99
+#define SYMBOL_INVALID 9
+#define INVALID -999
+#define LALR_ACCEPT 999
 
 \n\n""")
 

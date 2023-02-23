@@ -359,6 +359,12 @@ MigrationBackup/
 # VS Code
 **/.vscode/
 
+# HyperDbg builds
+/hyperdbg/build/*
+
+# HyperDbg script engine test cases
+/hyperdbg/hyperdbg-cli/script-test-cases/*
+
 # Exceptions
 !/hyperdbg/libraries/*
 !/hyperdbg/libraries/pdbex/*
@@ -373,3 +379,10 @@ MigrationBackup/
 !/hyperdbg/libraries/kdserial/x64/*
 !/hyperdbg/libraries/kdserial/arm/*
 !/hyperdbg/libraries/kdserial/arm64/*
+
+
+# Code review tools
+
+compile_commands.json
+StructLayoutSettings.json
+*.metaproj

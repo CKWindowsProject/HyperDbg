@@ -1,6 +1,6 @@
 /**
  * @file pch.cpp
- * @author Sina Karvandi (sina@rayanfam.com)
+ * @author Sina Karvandi (sina@hyperdbg.org)
  * @brief source file corresponding to the pre-compiled header
  * @details
  * @version 0.1
@@ -10,6 +10,11 @@
  *
  */
 #include "pch.h"
+
+//
+// Global variables
+//
+#include "header/globals.h"
 
 //
 // When you are using pre-compiled headers, this source file is necessary for

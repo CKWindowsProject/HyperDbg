@@ -1,6 +1,6 @@
 """
  * @file lalr1_parse_table_generator.py
- * @author M.H. Gholamrezei (gholamrezaei.mh@gmail.com)
+ * @author M.H. Gholamrezei (mh@hyperdbg.org)
  * @brief Script engine LALR(1) Parse table generator 
  * @details This program reads grammar from Boolean_Expression_Grammar.txt file 
  *          placed in the same directory of the program 
@@ -49,8 +49,8 @@ class LALR1Parser:
 
 
         # INVALID rule indicator
-        self.INVALID = -99 
-        self.ACCEPT =   99
+        self.INVALID = -999 
+        self.ACCEPT =   999
 
         self.FunctionsDict = dict()
         self.OperatorsList = []

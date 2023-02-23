@@ -1,6 +1,6 @@
 """
  * @file ll1_parse_table_generator.py
- * @author M.H. Gholamrezei (gholamrezaei.mh@gmail.com)
+ * @author M.H. Gholamrezei (mh@hyperdbg.org)
  * @brief Script engine LL(1) Parse table generator 
  * @details This program reads grammar from Greammar.txt file 
  *          placed in the same directory of the program 
@@ -46,10 +46,10 @@ class LL1Parser:
         self.MAXIMUM_RHS_LEN = 0
 
 
-        self.SPECIAL_TOKENS = ['%', '+', '++', '-', '--', "*", "/", "=", "==", "!=", ",", ";", "(", ")", "{", "}", "|", "||", ">>", ">=", "<<", "<=", "&", "&&", "^"]
+        self.SPECIAL_TOKENS = ['%', '+', '~', '++', '-', '--', "*", "/", "=", "==", "!=", ",", ";", "(", ")", "{", "}", "|", "||", ">>", ">=", "<<", "<=", "&", "&&", "^"]
 
         # INVALID rule indicator
-        self.INVALID = -99
+        self.INVALID = -999
 
         self.FunctionsDict = dict()
         self.OperatorsTwoOperand = []
@@ -889,7 +889,7 @@ class LL1Parser:
             return None
         
         X = p +1
-        while self.IsSemanticRule(Rhs[X]):
+        while self.IsSemanticRule(Rhs[X]) and X + 1 < len(Rhs):
             X+=1
         return Rhs[X]
         
